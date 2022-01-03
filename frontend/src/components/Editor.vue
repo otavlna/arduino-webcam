@@ -1,11 +1,12 @@
 <template>
   <v-ace-editor
     :value="code"
+    :options="{printMargin: false}"
     @update:value="$emit('update:code', $event)"
     @init="editorInit"
     lang="c_cpp"
-    theme="chrome"
-    style="height: 300px"
+    theme="one_dark"
+    style="height: 300px; font-size: 15px"
     ref="ace"
   />
 </template>
@@ -13,7 +14,7 @@
 <script>
 import { VAceEditor } from 'vue3-ace-editor'
 import 'ace-builds/src-noconflict/mode-c_cpp'
-import 'ace-builds/src-noconflict/theme-chrome'
+import 'ace-builds/src-noconflict/theme-one_dark'
 
 export default {
   name: 'Editor',
