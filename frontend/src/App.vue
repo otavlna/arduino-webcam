@@ -32,8 +32,24 @@ export default {
   data () {
     return {
       code: '',
-      messages: ['ahoj', 'ahoj2', 'ahoj3']
+      messages: ['ahoj', 'ahoj2', 'ahoj3'],
+      ws: null
     }
+  },
+  created () {
+    // Create WebSocket connection.
+    this.ws = new WebSocket('ws://localhost:1337')
+
+    // Connection opened
+    this.ws.addEventListener('open', (event) => {
+      this.ws.send('Hello Server!')
+    })
+
+    // Listen for messages
+    this.ws.addEventListener('message', (event) => {
+      console.log('Message from server ', event.data)
+      this.ws.send('Hello Server!')
+    })
   }
 }
 </script>
