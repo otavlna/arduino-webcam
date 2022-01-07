@@ -1,13 +1,18 @@
 <template>
   <header class="bg-white py-4">
     <div class="lg:mx-20 mx-5">
-      <h1>Arduino Webcam</h1>
+      <h1><font-awesome-icon icon="camera" /> Arduino Webcam</h1>
     </div>
   </header>
-  <main class="max-w-7xl mx-auto mt-5">
-    <div class="flex space-x-10 h-80">
-      <Editor class="flex-editor" v-model:code="code" />
-      <Log :messages="messages" class="bg-white overflow-y-auto flex-1" />
+  <main class="mx-5 flex flex-col items-stretch main pb-2">
+    <div class="flex gap-x-10 mr-10 h-full">
+      <div class="flex-left h-full">
+        <Editor class="h-full" v-model:code="code" />
+      </div>
+      <div class="flex-right h-full flex flex-col">
+        <Log :messages="messages" class="bg-white overflow-y-auto flex-1" />
+        <player class="w-full flex-1" />
+      </div>
     </div>
   </main>
 </template>
@@ -15,12 +20,14 @@
 <script>
 import Editor from './components/Editor.vue'
 import Log from './components/Log.vue'
+import Player from './components/Player.vue'
 
 export default {
   name: 'App',
   components: {
     Editor,
-    Log
+    Log,
+    Player
   },
   data () {
     return {
@@ -30,3 +37,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.main {
+  height: calc(100% - 56px)
+}
+</style>

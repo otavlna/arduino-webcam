@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <p class="bg-green-700 text-white text-center flex-0">Code Editor</p>
+    <p class="bg-gray-700 text-white text-center flex-0">Code Editor</p>
     <v-ace-editor
       :value="code"
       :options="{ printMargin: false }"
@@ -14,13 +14,21 @@
     <div class="mt-1 flex justify-between">
       <div>
         <label for="language">Language: </label>
-        <select name="language" id="language">
-          <option value="c">C</option>
+        <select class="mr-3" name="language" id="language">
           <option value="wiring" selected>Wiring</option>
+          <option value="c">C</option>
+        </select>
+        <label for="snippet">Code snippet: </label>
+        <select name="snippet" id="snippet">
+          <option value="default" selected>Default (empty)</option>
+          <option value="blink">Blink</option>
+          <option value="buzzer">Buzzer</option>
+          <option value="millis">Millis</option>
         </select>
       </div>
       <div>
-        <button class="btn btn-blue">Upload</button>
+        <button class="mr-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4  rounded"><font-awesome-icon icon="download" /> Download code</button>
+        <button class="btn btn-blue"><font-awesome-icon icon="upload" /> Upload to Arduino</button>
       </div>
     </div>
   </div>

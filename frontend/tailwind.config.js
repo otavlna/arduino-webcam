@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       flex: {
-        editor: '1 0 70%'
+        left: '1 0 60%',
+        right: '1 0 40%'
       }
     }
   },
