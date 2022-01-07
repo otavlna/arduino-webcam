@@ -7,7 +7,7 @@
   <main class="mx-5 flex flex-col items-stretch main pb-2">
     <div class="flex gap-x-10 mr-10 h-full">
       <div class="flex-left h-full">
-        <Editor class="h-full" v-model:code="code" />
+        <Editor class="h-full" v-model:code="code" @upload="upload" />
       </div>
       <div class="flex-right h-full flex flex-col">
         <Log :messages="messages" class="bg-white overflow-y-auto flex-1" />
@@ -36,19 +36,23 @@ export default {
       ws: null
     }
   },
+  methods: {
+    upload () {
+      this.ws.send(JSON.stringify({ code: this.code, lang: 'c' }))
+    }
+  },
   created () {
     // Create WebSocket connection.
     this.ws = new WebSocket('ws://localhost:1337')
 
     // Connection opened
     this.ws.addEventListener('open', (event) => {
-      this.ws.send('Hello Server!')
+      
     })
 
     // Listen for messages
     this.ws.addEventListener('message', (event) => {
       console.log('Message from server ', event.data)
-      this.ws.send('Hello Server!')
     })
   }
 }

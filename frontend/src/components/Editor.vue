@@ -28,7 +28,7 @@
       </div>
       <div>
         <button class="mr-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4  rounded"><font-awesome-icon icon="download" /> Download code</button>
-        <button class="btn btn-blue"><font-awesome-icon icon="upload" /> Upload to Arduino</button>
+        <button class="btn btn-blue" @click="$emit('upload')"><font-awesome-icon icon="upload" /> Upload to Arduino</button>
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ export default {
     VAceEditor
   },
   props: ['code'],
-  emits: ['update:code'],
+  emits: ['update:code', 'upload'],
   methods: {
     editorInit () {
       console.log('editor init')
