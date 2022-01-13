@@ -6,6 +6,13 @@ module.exports = {
       flex: {
         left: '1 0 60%',
         right: '1 0 40%'
+      },
+      colors: {
+        background: '#232323',
+        primary: '#E2E2E2'
+      },
+      fontFamily: {
+        monospace: 'monospace'
       }
     }
   },

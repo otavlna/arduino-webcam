@@ -1,25 +1,25 @@
 <template>
   <div class="flex flex-col">
-    <p class="bg-gray-700 text-white text-center flex-0">Code Editor</p>
+    <!-- <p class="bg-gray-700 text-white text-center flex-0">Code Editor</p> -->
     <v-ace-editor
       :value="code"
-      :options="{ printMargin: false }"
+      :options="{ printMargin: false, fontSize: '17px' }"
       @update:value="$emit('update:code', $event)"
       @init="editorInit"
       lang="c_cpp"
-      theme="chrome"
+      theme="twilight"
       ref="ace"
       class="flex-1"
     />
-    <div class="mt-1 flex justify-between">
+    <div class="mt-1 mx-3 flex justify-between">
       <div>
-        <label for="language">Language: </label>
-        <select class="mr-3" name="language" id="language">
+        <label class="text-primary" for="language">Language: </label>
+        <select class="text-primary bg-background mr-3 border-solid border-2 border-primary" name="language" id="language" @input="$emit('update:lang', $event.target.value)" :value="lang">
           <option value="wiring" selected>Wiring</option>
           <option value="c">C</option>
         </select>
-        <label for="snippet">Code snippet: </label>
-        <select name="snippet" id="snippet">
+        <label class="text-primary" for="snippet">Code snippet: </label>
+        <select class="text-primary bg-background border-solid border-2 border-primary" name="snippet" id="snippet">
           <option value="default" selected>Default (empty)</option>
           <option value="blink">Blink</option>
           <option value="buzzer">Buzzer</option>
@@ -37,15 +37,15 @@
 <script>
 import { VAceEditor } from 'vue3-ace-editor'
 import 'ace-builds/src-noconflict/mode-c_cpp'
-import 'ace-builds/src-noconflict/theme-chrome'
+import 'ace-builds/src-noconflict/theme-twilight'
 
 export default {
   name: 'Editor',
   components: {
     VAceEditor
   },
-  props: ['code'],
-  emits: ['update:code', 'upload'],
+  props: ['code', 'lang'],
+  emits: ['update:code', 'update:lang', 'upload'],
   methods: {
     editorInit () {
       console.log('editor init')

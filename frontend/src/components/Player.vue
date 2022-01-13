@@ -1,6 +1,6 @@
 <template>
 <div class="flex flex-col">
-  <p class="bg-gray-700 text-white text-center flex-0">Arduino Webcam</p>
+  <!-- <p class="bg-gray-700 text-white text-center flex-0">Arduino Webcam</p> -->
   <div ref="twitchVideo" class="flex-1" />
 </div>
 </template>
@@ -15,7 +15,7 @@ export default {
     const options = {
       width: '100%',
       height: '100%',
-      channel: 'mazarin1k'
+      channel: 'streamerhouse'
     }
     this.$loadScript('twitch.js')
       .then(() => {
