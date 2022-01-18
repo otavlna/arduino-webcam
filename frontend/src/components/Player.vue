@@ -15,7 +15,7 @@ export default {
     const options = {
       width: '100%',
       height: '100%',
-      channel: 'streamerhouse'
+      channel: 'arduinowebcam'
     }
     this.$loadScript('twitch.js')
       .then(() => {
