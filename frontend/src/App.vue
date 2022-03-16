@@ -24,6 +24,7 @@
           class="h-full"
           v-model:code="code"
           v-model:lang="lang"
+          :websocketReady="websocketReady"
           @upload="upload"
         />
       </div>
