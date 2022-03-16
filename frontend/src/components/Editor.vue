@@ -76,11 +76,11 @@
         </button>
         <button
           class="
-            border-solid border-2 border-primary
+            border-solid border-2 border-blue-500
             mr-2
             bg-background
             hover:bg-buttonHover
-            text-white
+            text-blue-500
             py-2
             px-4
             rounded"
