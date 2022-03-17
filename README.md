@@ -11,6 +11,7 @@ work in progress
 [avr-libc - Standard C library for AVR-GCC](https://www.nongnu.org/avr-libc/user-manual/modules.html)
 [Arduino Makefile](https://github.com/sudar/Arduino-Makefile)
 [Awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)
+[Let's encrypt](https://certbot.eff.org/instructions?ws=nginx&os=debianbuster)
 
 # Poznámky
 
