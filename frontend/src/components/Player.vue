@@ -34,6 +34,7 @@ export default {
         width: this.streamWidth * this.sizeCoef,
         height: this.streamHeight * this.sizeCoef,
         channel: "arduinowebcam",
+        parent: ["localhost", "sudety.ch", "www.sudety.ch"]
       };
     },
   },
