@@ -44,7 +44,7 @@ function processWiring(request, ws) {
     if (err) {
       return console.log(err);
     }
-    const command = `export ARDUINO_DIR=../../arduino-1.8.16 && export ARDMK_DIR=./Makefile && export AVR_TOOLS_DIR=/usr/include && avrdude -F -V -c arduino -p ATMEGA328P -P /dev/${device} -b 115200 -U flash:w:build-uno/code-wiring.hex`
+    const command = `export ARDUINO_DIR=../../arduino-1.8.16 && export ARDMK_DIR=./Makefile && export AVR_TOOLS_DIR=/usr/include && make && avrdude -F -V -c arduino -p ATMEGA328P -P /dev/${device} -b 115200 -U flash:w:build-uno/code-wiring.hex`
     exec(command, { cwd: 'code-wiring' }, (error, stdout, stderr) => {
       ws.send(JSON.stringify({ type: 'log', stdout, stderr }))
     });
