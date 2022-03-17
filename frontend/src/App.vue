@@ -97,11 +97,7 @@ export default {
 };
 </script>
 
-<style>
-html, body {
-  height: 100%;
-}
-
+<style scoped>
 .main {
   height: calc(100% - 56px);
   display: grid;
