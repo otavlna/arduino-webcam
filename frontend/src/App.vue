@@ -11,28 +11,22 @@
           Connected
         </span>
         <span v-else class="text-red-600">
-          <font-awesome-icon icon="exclamation-circle"/>
+          <font-awesome-icon icon="exclamation-circle" />
           Trying to reconnect...
         </span>
       </div>
     </div>
   </header>
-  <main class="flex flex-col items-stretch main pb-2">
-    <div class="flex h-full">
-      <div class="flex-left h-full">
-        <Editor
-          class="h-full"
-          v-model:code="code"
-          v-model:lang="lang"
-          :websocketReady="websocketReady"
-          @upload="upload"
-        />
-      </div>
-      <div class="flex-right h-full flex flex-col">
-        <Log :messages="messages" class="bg-white overflow-y-auto flex-1" />
-        <Player class="w-full flex-1" />
-      </div>
-    </div>
+  <main class="main">
+    <Editor
+      class="editor"
+      v-model:code="code"
+      v-model:lang="lang"
+      :websocketReady="websocketReady"
+      @upload="upload"
+    />
+    <Log :messages="messages" class="log bg-white overflow-y-auto" />
+    <Player class="player" />
   </main>
 </template>
 
@@ -54,7 +48,7 @@ export default {
       lang: "wiring",
       messages: ["Waiting for input..."],
       ws: null,
-      websocketReady: false
+      websocketReady: false,
     };
   },
   methods: {
@@ -64,7 +58,7 @@ export default {
       this.ws.addEventListener("open", (event) => {
         console.log(this.ws);
         console.log("socket connected");
-        this.websocketReady = true
+        this.websocketReady = true;
       });
 
       this.ws.addEventListener("message", (event) => {
@@ -83,7 +77,7 @@ export default {
 
       this.ws.addEventListener("close", (event) => {
         console.log("socket closed, trying to reconnect");
-        this.websocketReady = false
+        this.websocketReady = false;
         setTimeout(() => {
           this.establishConnection();
         }, 1000);
@@ -99,12 +93,30 @@ export default {
   },
   created() {
     this.establishConnection();
-  }
+  },
 };
 </script>
 
 <style scoped>
 .main {
   height: calc(100% - 56px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto;
+}
+
+.editor {
+  grid-column: 1 / span 1;
+  grid-row: 1 / span 2;
+}
+
+.log {
+  grid-column: 2 / span 1;
+  grid-row: 1 / span 1;
+}
+
+.player {
+  grid-column: 2 / span 1;
+  grid-row: 2 / span 1;
 }
 </style>
