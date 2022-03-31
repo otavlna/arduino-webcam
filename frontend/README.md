@@ -1,23 +1,18 @@
-# arduino-webcam-frontend
+# Arduino Webcam Frontend
 
-## Project setup
+## Instalace
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Spuštění pro vývoj (kompiluje a hot-reloaduje)
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Kompilace a minifikace pro produkční sestavení
 ```
 npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
 
 ### Customize configuration
