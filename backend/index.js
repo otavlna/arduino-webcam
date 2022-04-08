@@ -105,7 +105,7 @@ async function queueNext () {
     return
   }
   currentRequest.ws.send(JSON.stringify({ type: 'yourTurn' }))
-  broadcast(wss, { type: 'currentCode', code: currentRequest.code })
+  broadcast(wss, { type: 'currentCode', code: currentRequest.code, lang: currentRequest.lang })
   let exitCode = null
   if (currentRequest.lang === 'c') {
     exitCode = await processC(currentRequest)

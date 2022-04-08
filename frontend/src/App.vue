@@ -34,6 +34,7 @@
       :canUpload="websocketReady && !waitingForTurn"
       :waitingInQueue="queuePosition > 0"
       :currentCode="currentCode"
+      :currentLang="currentLang"
       @upload="upload"
     />
     <div class="log-player-container flex flex-col">
@@ -117,6 +118,7 @@ export default {
             break
           case 'currentCode':
             this.currentCode = message.code
+            this.currentLang = message.lang
             break
         }
       })

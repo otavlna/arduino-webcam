@@ -75,7 +75,9 @@
           </select>
         </div>
 
-        <p class="font-bold text-red-600" v-if="editDisabled">Showing currently running code. Editing disabled!</p>
+        <p v-if="editDisabled && currentLang" class="text-primary mr-2">Language: {{ currentLang }}</p>
+
+        <p v-if="editDisabled" class="font-bold text-red-600">Showing currently running code. Editing disabled!</p>
 
       <div class="ml-auto">
         <button
@@ -88,11 +90,12 @@
             px-4
             rounded
           "
-          @click="$emit('download-file')"
+          @click="saveFile()"
         >
           <font-awesome-icon icon="file-download" /> Download
         </button>
         <button
+          v-if="!editDisabled"
           class="
             border-solid border-2 border-blue-500
             mr-2
@@ -104,7 +107,7 @@
             rounded
           "
           :class="!canUpload ? 'opacity-30 cursor-not-allowed' : ''"
-          @click="handleClick"
+          @click="handleUpload"
         >
           <font-awesome-icon icon="upload" :disabled="!canUpload || waitingInQueue" />
           Upload to Arduino
@@ -119,6 +122,7 @@ import { VAceEditor } from 'vue3-ace-editor'
 import 'ace-builds/src-noconflict/mode-c_cpp'
 import 'ace-builds/src-noconflict/theme-twilight'
 import snippets from '../snippets'
+import { saveAs } from 'file-saver'
 
 export default {
   name: 'Editor',
@@ -156,16 +160,26 @@ export default {
       return this.selectedCode !== 'my'
     }
   },
-  props: ['code', 'lang', 'canUpload', 'waitingInQueue', 'currentCode'],
+  props: ['code', 'lang', 'canUpload', 'waitingInQueue', 'currentCode', 'currentLang'],
   emits: ['update:code', 'update:lang', 'upload'],
   methods: {
     editorInit () {
       console.log('editor init')
     },
-    handleClick () {
+    handleUpload () {
       if (this.canUpload) {
         this.$emit('upload')
       }
+    },
+    saveFile () {
+      const file = new Blob([this.shownCode])
+      let fileExtension
+      if (this.editDisabled) {
+        fileExtension = this.currentLang === 'wiring' ? 'ino' : 'c'
+      } else {
+        fileExtension = this.lang === 'wiring' ? 'ino' : 'c'
+      }
+      saveAs(file, `code.${fileExtension}`)
     }
   }
 }
