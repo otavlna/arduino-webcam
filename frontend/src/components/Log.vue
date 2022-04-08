@@ -1,8 +1,11 @@
 <template>
 <div>
-  <div class="bg-black pa-2 min-h-full">
-    <ul class="flex flex-col text-white font-monospace" ref="messages">
-      <li v-for="(m, i) in messages" :key="i" class="mt-2 px-4" v-html="m" />
+  <div class="bg-black min-h-full px-3 py-2">
+    <ul class="text-white font-monospace" ref="messages">
+      <li v-for="(m, i) in messages" :key="i" class="inline">
+        <span v-if="m.stdout" v-html="m.stdout"></span>
+        <span v-if="m.stderr" v-html="m.stderr" class="text-red-600"></span>
+      </li>
     </ul>
   </div>
 </div>
@@ -20,7 +23,7 @@ export default {
       deep: true,
       handler () {
         this.$nextTick(() => {
-          this.$refs.messages.children[this.$refs.messages.children.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+          this.$refs.messages.children[this.$refs.messages.children.length - 1].scrollIntoView({ behavior: 'auto', block: 'end', inline: 'nearest' })
         })
       }
     }

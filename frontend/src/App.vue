@@ -15,108 +15,157 @@
           Trying to reconnect...
         </span>
       </div>
+      <div class="ml-auto">
+        <span class="text-primary mr-5" v-if="isRunning">
+            Current user time left: {{ queueTimeLeft }} s
+        </span>
+        <span class="text-green-600" v-if="myTurn">Your turn</span>
+        <span class="text-yellow-600" v-else-if="queueLength > 0 && !waitingForTurn">Queue length: {{ queueLength }}</span>
+        <span class="text-yellow-600" v-else-if="queueLength > 0 && waitingForTurn">Queue position: {{queuePosition}}/{{ queueLength }}</span>
+        <span class="text-primary" v-else>Queue empty</span>
+      </div>
     </div>
   </header>
-  <main class="main">
+  <main class="main flex flex-row">
     <Editor
-      class="editor"
+      class="flex-grow"
       v-model:code="code"
       v-model:lang="lang"
-      :websocketReady="websocketReady"
+      :canUpload="websocketReady && !waitingForTurn"
+      :waitingInQueue="queuePosition > 0"
+      :currentCode="currentCode"
       @upload="upload"
     />
-    <Log :messages="messages" class="log bg-white overflow-y-auto" />
-    <Player class="player" />
+    <div class="log-player-container flex flex-col">
+      <Log :messages="messages" class="bg-white overflow-y-auto flex-grow" />
+      <Player />
+    </div>
+
   </main>
 </template>
 
 <script>
-import Editor from "./components/Editor.vue";
-import Log from "./components/Log.vue";
-import Player from "./components/Player.vue";
+import Editor from './components/Editor.vue'
+import Log from './components/Log.vue'
+import Player from './components/Player.vue'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Editor,
     Log,
-    Player,
+    Player
   },
-  data() {
+  data () {
     return {
-      code: "",
-      lang: "wiring",
-      messages: ["Waiting for input..."],
+      code: '',
+      lang: 'wiring',
+      messages: [{ stdout: 'Waiting for input... <br />' }],
       ws: null,
       websocketReady: false,
-    };
+      queueLength: null,
+      timeoutStartTime: null,
+      timeoutLength: null,
+      isRunning: false,
+      dateNow: 0,
+      myTurn: false,
+      queuePosition: null,
+      currentCode: ''
+    }
+  },
+  computed: {
+    queueTimeLeft () {
+      return (((this.timeoutStartTime + this.timeoutLength) - this.dateNow) * 0.001).toFixed(0)
+    },
+    waitingForTurn () {
+      return this.queuePosition !== null
+    }
   },
   methods: {
-    establishConnection() {
-      this.ws = new WebSocket("ws://localhost:1337");
+    establishConnection () {
+      this.ws = new WebSocket('ws://localhost:1337')
 
-      this.ws.addEventListener("open", (event) => {
-        console.log(this.ws);
-        console.log("socket connected");
-        this.websocketReady = true;
-      });
+      this.ws.addEventListener('open', (event) => {
+        console.log(this.ws)
+        console.log('socket connected')
+        this.websocketReady = true
+      })
 
-      this.ws.addEventListener("message", (event) => {
-        const message = JSON.parse(event.data);
-        if (message.type === "log") {
-          if (message.stderr) {
-            this.messages.push(this.formatMessage(message.stderr));
-          }
+      this.ws.addEventListener('message', (event) => {
+        const message = JSON.parse(event.data)
+        console.log(message)
+
+        switch (message.type) {
+          case 'log':
+            this.messages.push(this.formatMessage(message))
+            break
+          case 'queue':
+            this.timeoutStartTime = message.timeoutStartTime
+            this.timeoutLength = message.timeoutLength
+            this.queueLength = message.queueLength
+            this.isRunning = message.isRunning
+            break
+          case 'requestComplete':
+            this.myTurn = false
+            this.queuePosition = null
+            break
+          case 'yourTurn':
+            this.myTurn = true
+            break
+          case 'queuePosition':
+            this.queuePosition = message.position
+            break
+          case 'currentCode':
+            this.currentCode = message.code
+            break
         }
-      });
+      })
 
-      this.ws.addEventListener("error", (event) => {
-        console.log("socket encountered error");
-        this.ws.close();
-      });
+      this.ws.addEventListener('error', (event) => {
+        console.log('socket encountered error')
+        this.ws.close()
+      })
 
-      this.ws.addEventListener("close", (event) => {
-        console.log("socket closed, trying to reconnect");
-        this.websocketReady = false;
+      this.ws.addEventListener('close', (event) => {
+        console.log('socket closed, trying to reconnect')
+        this.websocketReady = false
         setTimeout(() => {
-          this.establishConnection();
-        }, 1000);
-      });
+          this.establishConnection()
+        }, 1000)
+      })
     },
-    upload() {
-      this.ws.send(JSON.stringify({ code: this.code, lang: this.lang }));
+    upload () {
+      this.ws.send(JSON.stringify({ code: this.code, lang: this.lang }))
     },
-    formatMessage(message) {
-      const formatted = message.replace(/\n/g, "<br />");
-      return formatted;
+    formatMessage (message) {
+      if (message.stdout) {
+        // eslint-disable-next-line no-control-regex
+        message.stdout = message.stdout.replace(/\n/g, '<br />').replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')
+      }
+      if (message.stderr) {
+        // eslint-disable-next-line no-control-regex
+        message.stderr = message.stderr.replace(/\n/g, '<br />').replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')
+      }
+      return message
     },
+    dateNowUpdate () {
+      this.dateNow = Date.now()
+    }
   },
-  created() {
-    this.establishConnection();
-  },
-};
+  created () {
+    setInterval(this.dateNowUpdate.bind(this), 100)
+    this.establishConnection()
+  }
+}
 </script>
 
 <style scoped>
 .main {
   height: calc(100% - 56px);
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: 1fr auto;
 }
 
-.editor {
-  grid-column: 1 / span 1;
-  grid-row: 1 / span 2;
+.log-player-container {
+  width: 832px;
 }
 
-.log {
-  grid-column: 2 / span 1;
-  grid-row: 1 / span 1;
-}
-
-.player {
-  grid-column: 2 / span 1;
-  grid-row: 2 / span 1;
-}
 </style>

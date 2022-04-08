@@ -7,60 +7,60 @@
 
 <script>
 export default {
-  name: "Player",
-  data() {
+  name: 'Player',
+  data () {
     return {
       player: null,
       streamWidth: 1280,
       streamHeight: 720,
       windowWidth: 0,
-      windowHeight: 0,
-    };
+      windowHeight: 0
+    }
   },
   computed: {
-    sizeCoef() {
+    sizeCoef () {
       if (this.windowWidth < 600) {
-        return 0.25;
+        return 0.25
       } else if (this.windowWidth < 900) {
-        return 0.3;
+        return 0.3
       } else if (this.windowWidth < 1200) {
-        return 0.4;
+        return 0.4
       } else if (this.windowWidth < 1500) {
-        return 0.5;
-      } else return 0.65;
+        return 0.5
+      } else return 0.65
     },
-    options() {
+    options () {
       return {
         width: this.streamWidth * this.sizeCoef,
         height: this.streamHeight * this.sizeCoef,
-        channel: "arduinowebcam",
-        parent: ["localhost", "sudety.ch", "www.sudety.ch"]
-      };
-    },
+        channel: 'arduinowebcam',
+        parent: ['localhost', 'sudety.ch', 'www.sudety.ch']
+      }
+    }
   },
   methods: {
-    startStream() {
-      this.$loadScript("twitch.js")
+    startStream () {
+      this.$loadScript('twitch.js')
         .then(() => {
           // you might need to pass an ID string as a first argument..
           this.player = new window.Twitch.Player(
             this.$refs.twitchVideo,
             this.options
-          );
-          this.player.setVolume(1);
-          console.log(this.player);
+          )
+          this.player.setVolume(1)
+          console.log(this.player)
         })
         .catch(() => {
-          console.log("failed to load twitch script");
-        });
-    },
+          console.log('failed to load twitch script')
+        })
+    }
   },
-  mounted() {
-    this.windowHeight = window.innerHeight;
-    this.windowWidth = window.innerWidth;
-    this.startStream();
-  },
-};
+  mounted () {
+    this.windowHeight = window.innerHeight
+    this.windowWidth = window.innerWidth
+    this.startStream()
+  }
+}
 </script>
 
 <style scoped>
