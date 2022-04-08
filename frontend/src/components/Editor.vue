@@ -88,20 +88,6 @@
             px-4
             rounded
           "
-          @click="$emit('open-file')"
-        >
-          <font-awesome-icon icon="file-upload" /> Open
-        </button>
-        <button
-          class="
-            mr-2
-            bg-btn
-            hover:bg-buttonHover
-            text-white
-            py-2
-            px-4
-            rounded
-          "
           @click="$emit('download-file')"
         >
           <font-awesome-icon icon="file-download" /> Download
