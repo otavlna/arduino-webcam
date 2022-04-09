@@ -25,7 +25,7 @@
             "
             name="language"
             id="language"
-            @input="$emit('update:lang', $event.target.value)"
+            @input="selectLang($event.target.value)"
             :value="lang"
           >
             <option value="wiring" selected>Wiring</option>
@@ -44,11 +44,12 @@
             "
             name="snippet"
             id="snippet"
+            :value="selectedSnippet.name"
+            @input="selectSnippet($event.target.value)"
           >
             <option
-              v-for="snippet in currentSnippets"
-              v-bind:value="snippets.indexOf(snippet)"
-              :key="snippets.indexOf(snippet)"
+              v-for="(snippet) in currentSnippets"
+              :key="snippet.name"
             >
               {{ snippet.name }}
             </option>
@@ -131,22 +132,17 @@ export default {
   },
   data () {
     return {
-      selectedCode: 'my'
+      selectedCode: 'my',
+      selectedSnippet: null
     }
   },
   computed: {
     snippets () {
       return snippets
     },
-    cSnippets () {
-      return snippets.filter((snippet) => snippet.lang === 'c')
-    },
-    wiringSnippets () {
-      return snippets.filter((snippet) => snippet.lang === 'wiring')
-    },
     currentSnippets () {
-      if (this.lang === 'c') return this.cSnippets
-      return this.wiringSnippets
+      if (this.lang === 'c') return this.snippets.c
+      return this.snippets.wiring
     },
     shownCode () {
       if (this.selectedCode === 'my') {
@@ -159,6 +155,10 @@ export default {
     editDisabled () {
       return this.selectedCode !== 'my'
     }
+  },
+  created () {
+    this.selectedSnippet = this.currentSnippets[0]
+    this.$emit('update:code', this.selectedSnippet.code)
   },
   props: ['code', 'lang', 'canUpload', 'waitingInQueue', 'currentCode', 'currentLang'],
   emits: ['update:code', 'update:lang', 'upload'],
@@ -180,6 +180,24 @@ export default {
         fileExtension = this.lang === 'wiring' ? 'ino' : 'c'
       }
       saveAs(file, `code.${fileExtension}`)
+    },
+    selectSnippet (snippet, makePrompt = true) {
+      this.selectedSnippet = this.currentSnippets.find((s) => s.name === snippet)
+      if (makePrompt) {
+        if (confirm('This action will overwrite your current code. Continue?')) {
+          this.$emit('update:code', this.selectedSnippet.code)
+        }
+      } else {
+        this.$emit('update:code', this.selectedSnippet.code)
+      }
+    },
+    selectLang (lang) {
+      if (confirm('This action will overwrite your current code. Continue?')) {
+        this.$emit('update:lang', lang)
+        this.$nextTick(() => {
+          this.selectSnippet('Default (empty)', false)
+        })
+      }
     }
   }
 }
