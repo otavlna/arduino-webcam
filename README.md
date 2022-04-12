@@ -16,4 +16,3 @@ work in progress
 # Poznámky
 
 Definice Atmega328p: /usr/lib/avr/include/avr/iom328p.h
-ffmpeg -i /dev/video2  -vcodec libx264 -b:v 5M -acodec aac -b:a 256k -f flv rtmp://prg02.contribute.live-video.net/app/live_761839541_nqbv32bZBhfrZziM7DJT4AWEok2qB3

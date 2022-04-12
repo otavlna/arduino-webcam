@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     establishConnection () {
-      this.ws = new WebSocket('wss://arduino-webcam.lhr.rocks')
+      this.ws = new WebSocket('wss://arduino-webcam.lhr.rocks/')
 
       this.ws.addEventListener('open', (event) => {
         console.log(this.ws)
