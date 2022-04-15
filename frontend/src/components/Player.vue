@@ -9,12 +9,29 @@ export default {
   name: 'Player',
   data () {
     return {
-      player: null
+      player: null,
+      streamWidth: 1280,
+      streamHeight: 720,
+      windowWidth: 0,
+      windowHeight: 0
     }
   },
   computed: {
+    sizeCoef () {
+      if (this.windowWidth < 600) {
+        return 0.25
+      } else if (this.windowWidth < 900) {
+        return 0.3
+      } else if (this.windowWidth < 1200) {
+        return 0.4
+      } else if (this.windowWidth < 1500) {
+        return 0.5
+      } else return 0.65
+    },
     options () {
       return {
+        width: this.streamWidth * this.sizeCoef,
+        height: this.streamHeight * this.sizeCoef,
         channel: 'arduinowebcam',
         parent: ['localhost', 'sudety.ch', 'www.sudety.ch']
       }
@@ -37,6 +54,8 @@ export default {
     }
   },
   mounted () {
+    this.windowHeight = window.innerHeight
+    this.windowWidth = window.innerWidth
     this.startStream()
   }
 }
