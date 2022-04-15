@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col">
-    <!-- <p class="bg-gray-700 text-white text-center flex-0">Code Editor</p> -->
     <v-ace-editor
       :value="shownCode"
       :options="{ printMargin: false, fontSize: '17px', useWorker: true }"

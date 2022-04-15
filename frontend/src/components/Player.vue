@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col">
-    <!-- <p class="bg-gray-700 text-white text-center flex-0">Arduino Webcam</p> -->
     <div ref="twitchVideo" />
   </div>
 </template>
