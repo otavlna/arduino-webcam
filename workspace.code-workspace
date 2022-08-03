@@ -10,9 +10,5 @@
 			"path": "backend"
 		}
 	],
-	"settings": {
-		"files.associations": {
-			"io.h": "c"
-		}
-	}
+	"settings": {}
 }

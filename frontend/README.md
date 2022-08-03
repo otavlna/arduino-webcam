@@ -1,28 +1,16 @@
-# arduino-webcam-frontend
+# Arduino Webcam Frontend
 
-## Project setup
+## Instalace
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Spuštění pro vývoj (kompiluje a hot-reloaduje)
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Kompilace a minifikace pro produkční sestavení
 ```
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-
-https://www.sanity.io/guides/tailwind-css-with-vue-js
-https://github.com/CarterLi/vue3-ace-editor
